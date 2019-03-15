@@ -34,6 +34,7 @@
     "@trodi/electron-splashscreen": "^0.3.4",
     "dom-loaded": "^1.0.1",
     "electron-is-dev": "^1.0.1",
+    "electron-window-state": "^5.0.3",
     "mpris-service": "^2.0.0",
     "select-dom": "^4.1.3"
   },

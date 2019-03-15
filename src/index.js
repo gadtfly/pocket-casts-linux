@@ -2,6 +2,7 @@ const path = require(`path`);
 const { ipcMain, shell, app } = require(`electron`);
 const isDev = require(`electron-is-dev`);
 const { initSplashScreen } = require(`@trodi/electron-splashscreen`);
+const getWindowState = require(`electron-window-state`);
 
 const POCKET_CASTS_URL = `https://playbeta.pocketcasts.com/web/`;
 
@@ -14,10 +15,18 @@ try {
 let window;
 
 const createWindow = () => {
-  const size = { width: 1200, height: 800 };
+  const windowState = getWindowState({
+    defaultWidth: 1200,
+    defaultHeight: 800,
+  });
+
+  // windowState must be serialized to be compatible with
+  // @trodi/electron-splashscreen
+  const windowStateObj = JSON.parse(JSON.stringify(windowState));
+
   window = initSplashScreen({
     templateUrl: path.join(__dirname, `splash-screen`, `index.html`),
-    splashScreenOpts: size,
+    splashScreenOpts: windowStateObj,
     windowOpts: Object.assign(
       {
         webPreferences: {
@@ -26,10 +35,12 @@ const createWindow = () => {
           preload: path.join(__dirname, `content.js`),
         },
       },
-      size
+      windowStateObj
     ),
   });
   window.setMenuBarVisibility(false);
+
+  windowState.manage(window);
 
   isDev && window.webContents.openDevTools();
   window.loadURL(POCKET_CASTS_URL);
