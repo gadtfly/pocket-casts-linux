@@ -17,7 +17,7 @@
   "scripts": {
     "start": "electron .",
     "prebuild": "sudo rm -rf dist",
-    "build": "sudo electron-builder",
+    "build": "electron-builder",
     "postbuild": "electron-builder install-app-deps",
     "postinstall": "run-s postbuild",
     "test": "run-s lint",
